@@ -22,7 +22,14 @@ print_response(cli)
 https = Net::HTTP.new(host, 443)
 https.use_ssl = true
 
-https.verify_mode = OpenSSL::SSL::VERIFY_NONE unless ssl_verifypeer
+ if ssl_verifypeer
+  https.verify_mode = OpenSSL::SSL::VERIFY_PEER
+ else
+  https.verify_mode = OpenSSL::SSL::VERIFY_NONE
+ end
+ https.ssl_version ="TLSv1_2"
+
+ puts "*" * 100
 
 certificate = https.start do |http| 
  http.peer_cert 
